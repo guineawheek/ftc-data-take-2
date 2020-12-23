@@ -49,5 +49,6 @@ class TeamConverter(ConverterBase):
         team.city = data["city"]
         team.state_prov = data["state_prov"]
         team.country = data["country"]
+        team.postalcode = data["postalcode"]
         team.school_name = data["school_name"]
         return team

@@ -14,15 +14,17 @@
                 <p>You can view your imported data <a class="alert-link" href="{{view_url}}">here</a>.</p>
             {% endif %}
         </div>
-    {% elif status %}
+    {% elif status and status.startswith("bad_") %}
         <div class="alert alert-danger alert-dismissible" data-status="{{status}}">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <h4 class="alert-heading">Uh oh!</h4>
-            {% if status == "bad_key" %}
-                <p>We don't know how to import that key!</p>
-            {% elif status == "bad_apiv3" %}
-                <p>Make sure to supply a valid APIv3 key!</p>
-            {% endif %}
+            <p>Error: {{status}}</p>
+        </div>
+    {% elif status == "success_teams" %}
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <h4 class="alert-heading">success?</h4>
+            <p>teams should have loaded.</p>
         </div>
     {% endif %}
 
@@ -45,7 +47,7 @@
     </div>
   </div>
 
-  <div class="row">
+  <!--<div class="row">
     <h2>Input Data Key</h2>
     <form method="post">
         <div class="form-group">
@@ -57,6 +59,18 @@
             <label for="bootstrap-key">Data Key</label>
             <input type="text" id="bootstrap_key" name="bootstrap_key" class="form-control" placeholder="Enter key" />
             <small class="form-text text-muted">Input a team key, event key, or year</small>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>-->
+
+  <div class="row">
+    <h2>Control panel or something idk</h2>
+    <form method="post" action="/local/bootstrap/load_teams">
+        <div class="form-group">
+            <label for="">Team Data URL</label>
+            <input type="text" id="team_data_url" name="team_data_url" class="form-control" placeholder="Team Data URL" value="{{team_data_url}}"/>
+            <small class="form-text text-muted">To save your API key for future use, set it in the <a href="/admin/authkeys">Admin Panel</a></small>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

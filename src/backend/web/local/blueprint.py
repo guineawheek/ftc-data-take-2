@@ -4,7 +4,7 @@ from werkzeug.wrappers import Response
 
 from backend.common.environment import Environment
 from backend.common.sitevars.apiv3_key import Apiv3Key
-from backend.web.local.bootstrap import LocalDataBootstrap
+from backend.web.local.ftc_bootstrap import FtcDataBootstrap
 from backend.web.profiled_render import render_template
 
 """
@@ -41,12 +41,28 @@ def bootstrap_post() -> Response:
     if not apiv3_key:
         return redirect(url_for(".bootstrap", status="bad_apiv3"))
 
-    return_url = LocalDataBootstrap.bootstrap_key(key, apiv3_key)
+    return_url = None  # LocalDataBootstrap.bootstrap_key(key, apiv3_key)
     return redirect(
         url_for(
             ".bootstrap",
             status="success" if return_url is not None else "bad_key",
             url=return_url,
+        )
+    )
+
+
+@local_routes.route("/bootstrap/load_teams", methods=["POST"])
+def bootstrap_teams_post() -> Response:
+    team_data_url = request.form.get("team_data_url", "")
+    if not team_data_url:
+        return redirect(url_for(".bootstrap", status="bad_team_url"))
+
+    FtcDataBootstrap.bootstrap_teams(team_data_url)
+    return redirect(
+        url_for(
+            ".bootstrap",
+            status="success_teams",
+            url=None,
         )
     )
 

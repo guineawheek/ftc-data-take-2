@@ -14,7 +14,7 @@ from backend.web.profiled_render import render_template
 from backend.web.renderers.team_renderer import TeamRenderer
 
 MAX_TEAM_NUMBER_EXCLUSIVE = (
-    9000  # Support between Team 0 and Team MAX_TEAM_NUMBER_EXCLUSIVE - 1
+    19000  # Support between Team 0 and Team MAX_TEAM_NUMBER_EXCLUSIVE - 1
 )
 TEAMS_PER_PAGE = 1000
 VALID_PAGES = range(
@@ -24,10 +24,10 @@ VALID_PAGES = range(
 
 @cached_public
 def team_detail(team_number: TeamNumber, year: Year, is_canonical: bool = False) -> str:
-    team_key = f"frc{team_number}"
+    team_key = f"ftc{team_number}"
     if not Team.validate_key_name(team_key):
         abort(404)
-    team_future = TeamQuery(team_key=f"frc{team_number}").fetch_async()
+    team_future = TeamQuery(team_key=f"ftc{team_number}").fetch_async()
     team = team_future.get_result()
     if not team:
         abort(404)
@@ -40,10 +40,10 @@ def team_detail(team_number: TeamNumber, year: Year, is_canonical: bool = False)
 
 @cached_public
 def team_history(team_number: TeamNumber, is_canonical: bool = False) -> str:
-    team_key = f"frc{team_number}"
+    team_key = f"ftc{team_number}"
     if not Team.validate_key_name(team_key):
         abort(404)
-    team_future = TeamQuery(team_key=f"frc{team_number}").fetch_async()
+    team_future = TeamQuery(team_key=f"ftc{team_number}").fetch_async()
     team = team_future.get_result()
     if not team:
         abort(404)
@@ -54,7 +54,7 @@ def team_history(team_number: TeamNumber, is_canonical: bool = False) -> str:
 
 @cached_public
 def team_canonical(team_number: TeamNumber) -> str:
-    team_future = TeamQuery(team_key=f"frc{team_number}").fetch_async()
+    team_future = TeamQuery(team_key=f"ftc{team_number}").fetch_async()
     team = team_future.get_result()
     if not team:
         abort(404)
