@@ -95,6 +95,23 @@ class AwardType(enum.IntEnum):
     OTHER = 70
     AUTONOMOUS = 71
 
+    # Yknow what? Let's just append on the FTC enums. That way if we ever somehow decide to intermix
+    # this with upstream, then maybe there's a slim chance that this will work out.
+    INSPIRE = 1000
+    # we don't map Deans List/winning/finalist/judges as those awards are identical between both programs
+
+    # FTC_WINNER = 1001
+    # FTC_FINALIST = 1002
+    THINK = 1003
+    CONNECT = 1004
+    INNOVATE = 1005
+    DESIGN = 1006
+    MOTIVATE = 1007
+    CONTROL = 1008
+    PROMOTE = 1009
+    COMPASS = 1010
+    # JUDGES = 1011
+
 
 AWARD_TYPES: Set[AwardType] = {a for a in AwardType}
 
@@ -104,6 +121,7 @@ BLUE_BANNER_AWARDS: Set[AwardType] = {
     AwardType.CHAIRMANS_FINALIST,
     AwardType.WINNER,
     AwardType.WOODIE_FLOWERS,
+    AwardType.INSPIRE,
 }
 
 
@@ -164,6 +182,15 @@ SEARCHABLE: Dict[AwardType, str] = {
     AwardType.VOLUNTEER: "Volunteer",
     AwardType.WOODIE_FLOWERS: "Woodie Flowers",
     AwardType.JUDGES: "Judges'",
+    AwardType.INSPIRE: "Inspire",
+    AwardType.THINK: "Think",
+    AwardType.CONNECT: "Connect",
+    AwardType.INNOVATE: "Innovate",
+    AwardType.DESIGN: "Design",
+    AwardType.MOTIVATE: "Motivate",
+    AwardType.CONTROL: "Control",
+    AwardType.PROMOTE: "Promote",
+    AwardType.COMPASS: "Compass",
 }
 
 # Prioritized sort order for certain awards
