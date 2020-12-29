@@ -18,6 +18,16 @@ class EventType(enum.IntEnum):
     PRESEASON = 100
     UNLABLED = -1
 
+    # FTC event types
+    QUALIFIER = 1000
+    MEET = 1001
+
+    # note:  basically all the events in here can have multiple divisions.
+    LEAGUE_CMP = 1002
+    SUPER_QUALIFIER = 1003
+    REGIONAL_CMP = 1004
+    SUPER_REGIONAL_CMP = 1005
+
 
 EVENT_TYPES: Set[EventType] = {e for e in EventType}
 

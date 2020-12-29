@@ -1,5 +1,3 @@
-import logging
-
 from typing import Any, Dict, Optional
 
 import requests
@@ -135,30 +133,26 @@ class FtcDataBootstrap:
         list(map(lambda t: cls.store_award(t, event), event_awards))
 
     @classmethod
-    def bootstrap_teams(cls, team_data_url: str) -> None:
-        r = requests.get(team_data_url)
-        data = r.json()
-        for (idx, team_number) in enumerate(data.keys(), 1):
-            team_data = data[team_number]
-            latest_season = data[team_number]["seasons"][0]
+    def bootstrap_team(cls, team_number: int, team_data: dict) -> None:
+        latest_season = team_data["seasons"][0]
 
-            cls.store_team(
-                {
-                    "key": f"ftc{team_number}",
-                    "team_number": int(team_number),
-                    "name": latest_season["org"],
-                    "nickname": latest_season["name"],
-                    "website": latest_season["website"],
-                    "rookie_year": team_data["rookie_year"],
-                    "motto": latest_season["motto"],
-                    "city": latest_season["city"],
-                    "state_prov": latest_season["state_prov"],
-                    "country": latest_season["country"],
-                    "postalcode": latest_season["postal_code"],
-                    "school_name": "",
-                }
-            )
-            logging.info(f"Loaded {idx} / {len(data)} teams. ({team_number})")
+        cls.store_team(
+            {
+                "key": f"ftc{team_number}",
+                "team_number": int(team_number),
+                "name": latest_season["org"],
+                "nickname": latest_season["name"],
+                "website": latest_season["website"],
+                "rookie_year": team_data["rookie_year"],
+                "motto": latest_season["motto"],
+                "city": latest_season["city"],
+                "state_prov": latest_season["state_prov"],
+                "country": latest_season["country"],
+                "postalcode": latest_season["postal_code"],
+                "school_name": "",
+            }
+        )
+        return f"/team/{team_number}"
 
     @classmethod
     def bootstrap_key(cls, key: str, apiv3_key: str) -> Optional[str]:

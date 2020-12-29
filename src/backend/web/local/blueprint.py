@@ -1,3 +1,5 @@
+import json
+
 from flask import abort, Blueprint, Flask, redirect, request, url_for
 from flask_wtf.csrf import CSRFProtect
 from werkzeug.wrappers import Response
@@ -33,36 +35,19 @@ def bootstrap() -> str:
     return render_template("local/bootstrap.html", template_values)
 
 
-@local_routes.route("/bootstrap", methods=["POST"])
-def bootstrap_post() -> Response:
-    key = request.form.get("bootstrap_key", "")
-    apiv3_key = request.form.get("apiv3_key") or Apiv3Key.get()["apiv3_key"]
-
-    if not apiv3_key:
-        return redirect(url_for(".bootstrap", status="bad_apiv3"))
-
-    return_url = None  # LocalDataBootstrap.bootstrap_key(key, apiv3_key)
-    return redirect(
-        url_for(
-            ".bootstrap",
-            status="success" if return_url is not None else "bad_key",
-            url=return_url,
-        )
-    )
-
-
-@local_routes.route("/bootstrap/load_teams", methods=["POST"])
+@local_routes.route("/bootstrap/load/team", methods=["POST"])
 def bootstrap_teams_post() -> Response:
-    team_data_url = request.form.get("team_data_url", "")
-    if not team_data_url:
-        return redirect(url_for(".bootstrap", status="bad_team_url"))
+    team_json = request.form.get("team_data", "")
+    if not team_json:
+        return redirect(url_for(".bootstrap", status="bad_team"))
 
-    FtcDataBootstrap.bootstrap_teams(team_data_url)
+    team_data = json.loads(team_json)
+    return_url = FtcDataBootstrap.bootstrap_team(team_data["team_number"], team_data)
     return redirect(
         url_for(
             ".bootstrap",
             status="success_teams",
-            url=None,
+            url=return_url,
         )
     )
 
